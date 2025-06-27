@@ -166,6 +166,9 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- global status line
+vim.o.laststatus = 3
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -282,6 +285,12 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
+  },
+
+  {
+    'nvim-zh/colorful-winsep.nvim',
+    config = true,
+    event = { 'WinLeave' },
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
