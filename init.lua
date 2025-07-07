@@ -169,6 +169,9 @@ vim.o.confirm = true
 -- global status line
 vim.o.laststatus = 3
 
+-- Reduce lines moved when using Ctrl+D Ctrl+U
+vim.o.scroll = 10
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -251,7 +254,26 @@ rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
-
+  
+  {
+    'akinsho/toggleterm.nvim',
+    opts = {
+      open_mapping = [[<c-\>]],
+    }
+  },
+  {
+    'lucidph3nx/nvim-sops',
+    event = { 'BufEnter' },
+    opts = {},
+    keys = {
+      { '<leader>ef', vim.cmd.SopsEncrypt, desc = '[E]ncrypt [F]ile' },
+      { '<leader>df', vim.cmd.SopsDecrypt, desc = '[D]ecrypt [F]ile' },
+    },
+  },
+  -- {
+  --   'trixnz/sops.nvim',
+  --   lazy = false
+  -- },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -682,7 +704,7 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -690,7 +712,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         --
 
         lua_ls = {
@@ -781,7 +803,8 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { "prettierd", "prettier", stop_after_first = true },
+        json = { "jq" },
       },
     },
   },
