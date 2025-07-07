@@ -211,6 +211,12 @@ vim.keymap.set('n', '<C-S-l>', '<C-w>L', { desc = 'Move window to the right' })
 vim.keymap.set('n', '<C-S-j>', '<C-w>J', { desc = 'Move window to the lower' })
 vim.keymap.set('n', '<C-S-k>', '<C-w>K', { desc = 'Move window to the upper' })
 
+-- Bind keys for diffing between buffers
+-- Open 2 windows side by side to diff between them
+vim.keymap.set('n', '<leader>dw', '<cmd>windo diffthis<CR>', { desc = '[D]iff all open [W]indows' })
+vim.keymap.set('n', '<leader>dd', '<cmd>diffthis<CR>', { desc = 'Add current window to [D]iff' })
+vim.keymap.set('n', '<leader>dg', '<cmd>diffget<CR>', { desc = '[D]iff [G]et change from one side to other' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
