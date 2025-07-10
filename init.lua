@@ -216,6 +216,7 @@ vim.keymap.set('n', '<C-S-k>', '<C-w>K', { desc = 'Move window to the upper' })
 vim.keymap.set('n', '<leader>dw', '<cmd>windo diffthis<CR>', { desc = '[D]iff all open [W]indows' })
 vim.keymap.set('n', '<leader>dd', '<cmd>diffthis<CR>', { desc = 'Add current window to [D]iff' })
 vim.keymap.set('n', '<leader>dg', '<cmd>diffget<CR>', { desc = '[D]iff [G]et change from one side to other' })
+vim.keymap.set('n', '<leader>do', '<cmd>diffoff<CR>', { desc = 'Turn [D]iff mode [O]ff' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -275,6 +276,17 @@ require('lazy').setup({
     build = ':NeoImg Install',
     config = function()
       require('neo-img').setup()
+    end,
+  },
+  {
+    'deponian/nvim-base64',
+    keys = {
+      -- Decode/encode selected sequence from/to base64
+      { '<leader>db', '<Plug>(FromBase64)', mode = 'x' , desc = '[D]ecode selection from [B]ase64' },
+      { '<leader>eb', '<Plug>(FromBase64)', mode = 'x', desc = '[E]ncode selection to [B]ase64' }
+    },
+    config = function()
+      require('nvim-base64').setup()
     end,
   },
 
