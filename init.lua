@@ -128,6 +128,9 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
+-- Indent with spaces when using Tab instead of tab characters
+vim.o.expandtab = true
+
 -- Keep signcolumn on by default
 vim.o.signcolumn = 'yes'
 
