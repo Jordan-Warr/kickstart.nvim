@@ -292,10 +292,6 @@ require('lazy').setup({
       require('nvim-base64').setup()
     end,
   },
-
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
-
   {
     'akinsho/toggleterm.nvim',
     opts = {
@@ -311,10 +307,34 @@ require('lazy').setup({
       { '<leader>df', vim.cmd.SopsDecrypt, desc = '[D]ecrypt [F]ile' },
     },
   },
-  -- {
-  --   'trixnz/sops.nvim',
-  --   lazy = false
-  -- },
+  {
+    'kdheepak/lazygit.nvim',
+    lazy = true,
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "[L]azy [G]it" }
+    }
+  },
+  {
+    'nvim-telescope/telescope-file-browser.nvim',
+    dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
+  },
+
+  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
+
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -473,6 +493,34 @@ require('lazy').setup({
       -- Telescope picker. This is really useful to discover what Telescope can
       -- do as well as how to actually do it!
 
+      local ts_select_dir_for_grep = function(prompt_bufnr)
+      local action_state = require("telescope.actions.state")
+      local fb = require("telescope").extensions.file_browser
+      local live_grep = require("telescope.builtin").live_grep
+      local current_line = action_state.get_current_line()
+
+      fb.file_browser({
+        files = false,
+        depth = false,
+        attach_mappings = function(prompt_bufnr)
+          require("telescope.actions").select_default:replace(function()
+            local entry_path = action_state.get_selected_entry().Path
+            local dir = entry_path:is_dir() and entry_path or entry_path:parent()
+            local relative = dir:make_relative(vim.fn.getcwd())
+            local absolute = dir:absolute()
+
+            live_grep({
+              results_title = relative .. "/",
+              cwd = absolute,
+              default_text = current_line,
+            })
+          end)
+
+          return true
+        end,
+      })
+    end
+
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
       require('telescope').setup {
@@ -484,7 +532,18 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          live_grep = {
+            mappings = {
+              i = {
+                ["<C-f>"] = ts_select_dir_for_grep,
+              },
+              n = {
+                ["<C-f>"] = ts_select_dir_for_grep,
+              }
+            }
+          }
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
