@@ -285,8 +285,8 @@ require('lazy').setup({
     'deponian/nvim-base64',
     keys = {
       -- Decode/encode selected sequence from/to base64
-      { '<leader>db', '<Plug>(FromBase64)', mode = 'x' , desc = '[D]ecode selection from [B]ase64' },
-      { '<leader>eb', '<Plug>(FromBase64)', mode = 'x', desc = '[E]ncode selection to [B]ase64' }
+      { '<leader>db', '<Plug>(FromBase64)', mode = 'x', desc = '[D]ecode selection from [B]ase64' },
+      { '<leader>eb', '<Plug>(FromBase64)', mode = 'x', desc = '[E]ncode selection to [B]ase64' },
     },
     config = function()
       require('nvim-base64').setup()
@@ -311,21 +311,21 @@ require('lazy').setup({
     'kdheepak/lazygit.nvim',
     lazy = true,
     cmd = {
-      "LazyGit",
-      "LazyGitConfig",
-      "LazyGitCurrentFile",
-      "LazyGitFilter",
-      "LazyGitFilterCurrentFile",
+      'LazyGit',
+      'LazyGitConfig',
+      'LazyGitCurrentFile',
+      'LazyGitFilter',
+      'LazyGitFilterCurrentFile',
     },
     -- optional for floating window border decoration
     dependencies = {
-      "nvim-lua/plenary.nvim",
+      'nvim-lua/plenary.nvim',
     },
     -- setting the keybinding for LazyGit with 'keys' is recommended in
     -- order to load the plugin when the command is run for the first time
     keys = {
-      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "[L]azy [G]it" }
-    }
+      { '<leader>lg', '<cmd>LazyGit<cr>', desc = '[L]azy [G]it' },
+    },
   },
   {
     'nvim-telescope/telescope-file-browser.nvim',
@@ -494,32 +494,32 @@ require('lazy').setup({
       -- do as well as how to actually do it!
 
       local ts_select_dir_for_grep = function(prompt_bufnr)
-      local action_state = require("telescope.actions.state")
-      local fb = require("telescope").extensions.file_browser
-      local live_grep = require("telescope.builtin").live_grep
-      local current_line = action_state.get_current_line()
+        local action_state = require 'telescope.actions.state'
+        local fb = require('telescope').extensions.file_browser
+        local live_grep = require('telescope.builtin').live_grep
+        local current_line = action_state.get_current_line()
 
-      fb.file_browser({
-        files = false,
-        depth = false,
-        attach_mappings = function(prompt_bufnr)
-          require("telescope.actions").select_default:replace(function()
-            local entry_path = action_state.get_selected_entry().Path
-            local dir = entry_path:is_dir() and entry_path or entry_path:parent()
-            local relative = dir:make_relative(vim.fn.getcwd())
-            local absolute = dir:absolute()
+        fb.file_browser {
+          files = false,
+          depth = false,
+          attach_mappings = function(prompt_bufnr)
+            require('telescope.actions').select_default:replace(function()
+              local entry_path = action_state.get_selected_entry().Path
+              local dir = entry_path:is_dir() and entry_path or entry_path:parent()
+              local relative = dir:make_relative(vim.fn.getcwd())
+              local absolute = dir:absolute()
 
-            live_grep({
-              results_title = relative .. "/",
-              cwd = absolute,
-              default_text = current_line,
-            })
-          end)
+              live_grep {
+                results_title = relative .. '/',
+                cwd = absolute,
+                default_text = current_line,
+              }
+            end)
 
-          return true
-        end,
-      })
-    end
+            return true
+          end,
+        }
+      end
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
@@ -536,13 +536,13 @@ require('lazy').setup({
           live_grep = {
             mappings = {
               i = {
-                ["<C-f>"] = ts_select_dir_for_grep,
+                ['<C-f>'] = ts_select_dir_for_grep,
               },
               n = {
-                ["<C-f>"] = ts_select_dir_for_grep,
-              }
-            }
-          }
+                ['<C-f>'] = ts_select_dir_for_grep,
+              },
+            },
+          },
         },
         extensions = {
           ['ui-select'] = {
@@ -901,7 +901,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
+        python = { 'autopep8' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
